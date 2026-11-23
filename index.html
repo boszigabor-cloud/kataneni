@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kata néni tanterme – Elsős gyakorló</title>
+
+    <!-- iOS PWA (Főképernyőre helyezés) beállítások -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Kata néni">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FDF6E9">
+
+    <!-- Dinamikus Favicon és Apple Touch Icon -->
+    <link id="favicon-link" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%233B6E52'/%3E%3Ctext x='256' y='340' font-size='260' text-anchor='middle'%3E%F0%9F%93%9A%3C/text%3E%3C/svg%3E">
+    <link id="apple-touch-icon-link" rel="apple-touch-icon" sizes="512x512" href="">
+
+    <!-- Tailwind CSS betöltése -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Nunito a barátságos, mesekönyves tipográfiáért -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        vanilla: '#FDF6E9',
+                        cream: '#FFFDF8',
+                        cardigan: '#E8CFAF',
+                        latte: '#C69C72',
+                        chalkboard: '#3B6E52',
+                        chalkborder: '#8C6239',
+                        coral: '#E57A66',
+                        mint: '#6BB896',
+                        skyroom: '#6BAED6',
+                        lavender: '#D699B8',
+                        sunbeam: '#F4C95D',
+                        cocoa: '#4A3525'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Meleg, otthonos tantermi háttér finom pöttyözéssel */
+        body {
+            background-color: #FDF6E9;
+            background-image: 
+                radial-gradient(#E8CFAF 1.5px, transparent 1.5px),
+                radial-gradient(#F4C95D33 2px, transparent 2px);
+            background-size: 28px 28px;
+            background-position: 0 0, 14px 14px;
+            color: #4A3525;
+            -webkit-tap-highlight-color: transparent;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Asztali nézetben gazdagabb, rétegzett tantermi fal és padló hatás */
+        @media (min-width: 1024px) {
+            body {
+                background-color: #FBEED7;
+                background-image: 
+                    radial-gradient(circle at 18% 12%, rgba(255, 250, 232, 0.95) 0%, rgba(255, 250, 232, 0) 48%),
+                    radial-gradient(circle at 82% 8%, rgba(255, 246, 214, 0.9) 0%, rgba(255, 246, 214, 0) 45%),
+                    linear-gradient(180deg, #FDF4E3 0%, #F7E5C8 74%, #E6CCA7 74.2%, #DFC096 100%);
+                background-size: 100% 100%;
+                background-attachment: fixed;
+            }
+        }
+
+        /* Mesekönyves, puha árnyékok és keretek */
+        .storybook-card {
+            background-color: #FFFDF8;
+            border: 2.5px solid #DFC3A2;
+            box-shadow: 0 6px 0 #DFC3A2, 0 12px 24px rgba(74, 53, 37, 0.06);
+        }
+
+        .storybook-btn {
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+        }
+        .storybook-btn:active:not(:disabled) {
+            transform: translateY(3px);
+        }
+
+        /* Iskolai zöld tábla stílus fa kerettel */
+        .chalkboard-box {
+            background-color: #3B6E52;
+            background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.06) 0%, transparent 60%);
+            border: 6px solid #A47549;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.25), 0 6px 0 #7E5631, 0 10px 20px rgba(74, 53, 37, 0.12);
+        }
+
+        /* Asztali panoráma tantermi színpad keret */
+        .classroom-stage {
+            background: linear-gradient(180deg, #FFF7E8 0%, #FCEAD0 72%, #E8CFA9 72.3%, #DFC195 100%);
+            border: 3px solid #D8B892;
+            box-shadow: 0 8px 0 #D8B892, 0 18px 36px rgba(74, 53, 37, 0.09);
+        }
+
+        /* Animációk */
+        @keyframes popIn {
+            0% { transform: scale(0.93); opacity: 0; }
+            70% { transform: scale(1.02); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .animate-pop {
+            animation: popIn 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .animate-float {
+            animation: gentleFloat 3.4s ease-in-out infinite;
+        }
+
+        /* Szókiegészítő üres hely stílusa */
+        .blank-slot {
+            display: inline-block;
+            min-width: 115px;
+            border-bottom: 3px dashed #3B6E52;
+            color: #3B6E52;
+            font-weight: 900;
+            padding: 0 10px;
+            margin: 0 4px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .blank-filled-correct {
+            border-bottom: 3px solid #2E7D5B;
+            background-color: #DDF3E8;
+            color: #1F5C41;
+            border-radius: 10px;
+            padding: 2px 12px;
+        }
+
+        .blank-filled-wrong {
+            border-bottom: 3px solid #D9534F;
+            background-color: #FDE4E1;
+            color: #9E2A2B;
+            border-radius: 10px;
+            padding: 2px 12px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+    <!-- =====================================================================
+         1. FELSŐ FEJLÉC
+         ===================================================================== -->
+    <header class="w-full max-w-3xl lg:max-w-6xl mx-auto flex items-center justify-between bg-[#FFFDF8]/95 backdrop-blur-xs px-4 lg:px-6 py-3 rounded-2xl lg:rounded-3xl border-2 border-[#DFC3A2] shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-chalkboard border-2 border-[#A47549] flex items-center justify-center text-xl sm:text-2xl shadow-xs">
+                🏫
+            </div>
+            <div>
+                <h1 class="font-black text-base sm:text-xl leading-tight text-cocoa">Kata néni tanterme</h1>
+                <p class="text-xs font-extrabold text-[#9A6B3E]">Játékos gyakorlók elsősöknek • 1. osztály</p>
+            </div>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-2 bg-[#FDF6E9] border border-[#E3C8A8] px-4 py-1.5 rounded-2xl text-xs font-extrabold text-[#7A6048]">
+            <span>🌻</span>
+            <span>Napsugár Terem • Olvasás • Írás • Számolás</span>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5 bg-[#FFF3CD] text-[#7A5214] px-3.5 py-1.5 rounded-xl font-black text-sm sm:text-base border-2 border-[#F4C95D] shadow-2xs" title="Összegyűjtött csillagjaid">
+                <span class="text-base sm:text-lg">⭐</span>
+                <span id="total-stars-count">0</span>
+                <span class="hidden sm:inline text-xs font-extrabold text-[#9E6B1E]">csillag</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+         2. FŐ TARTALMI TERÜLET (Különálló főoldal: index.html)
+         ===================================================================== -->
+    <main class="w-full max-w-3xl lg:max-w-6xl mx-auto my-auto py-4 sm:py-6">
+
+        <div id="classroom-home-view" class="flex flex-col gap-6 animate-pop">
+
+            <!-- A1. MOBIL ÉS TABLET FEJLÉC KÁRTYÁK -->
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch lg:hidden">
+                <div class="md:col-span-7 storybook-card rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-4 relative">
+                    <div class="relative shrink-0">
+                        <div id="kata-home-avatar" class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b from-[#FDEBD0] to-[#F5CBA7] border-[3px] border-[#C69C72] overflow-hidden shadow-md flex items-center justify-center animate-float"></div>
+                        <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-coral text-white text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-xs whitespace-nowrap border border-white">
+                            Kata néni
+                        </span>
+                    </div>
+
+                    <div class="flex-1 bg-[#FDF6E9] border-2 border-[#E3C8A8] rounded-2xl p-3.5 sm:p-4 relative text-center sm:text-left">
+                        <p id="kata-home-speech" class="text-sm sm:text-base font-extrabold text-cocoa leading-relaxed">
+                            „Szervusz kis elsős! De jó, hogy itt vagy! Válassz egy tantárgyi polcot, és gyakoroljunk együtt játékosan!”
+                        </p>
+                        <div class="mt-2.5 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-extrabold bg-mint/20 text-[#28664B] px-2.5 py-1 rounded-lg">
+                                🎒 1. osztály
+                            </span>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-extrabold bg-sunbeam/30 text-[#7A5214] px-2.5 py-1 rounded-lg">
+                                ✨ Csillaggyűjtő
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 chalkboard-box rounded-3xl p-5 flex flex-col justify-center items-center text-center text-white relative overflow-hidden">
+                    <div class="text-xs font-extrabold uppercase tracking-widest text-[#A7DFC1] mb-1">1. osztály</div>
+                    <h2 class="text-2xl sm:text-[26px] font-black leading-snug tracking-tight">
+                        <span class="text-[#F4C95D]">Szia!</span><br>
+                        <span class="text-[#F7B2D9]">Kata néni</span> vagyok!
+                    </h2>
+                    <p class="text-xs sm:text-sm font-bold text-[#E6F4EC] mt-2 leading-snug">
+                        Gyere, gyakoroljunk együtt vidáman!
+                    </p>
+                    <div class="mt-3 flex items-center gap-2 opacity-85">
+                        <span class="w-6 h-1.5 bg-white rounded-full"></span>
+                        <span class="w-4 h-1.5 bg-[#F4C95D] rounded-full"></span>
+                        <span class="w-5 h-1.5 bg-[#F7B2D9] rounded-full"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- A2. ASZTALI TANTERMI PANORÁMA ÉS TÉRSUGALLAT -->
+            <section class="hidden lg:block classroom-stage rounded-[34px] p-6 xl:p-8 relative overflow-hidden min-h-[450px]">
+                
+                <!-- HÁTTÉR TANTERMI ILLUSZTRÁCIÓ (Jól látható zöld tábla számokkal/betűkkel, tacskós kép, rajzos óra) -->
+                <svg viewBox="0 0 1100 450" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="sunRay" x1="1" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#FFFDF5" stop-opacity="0.55"/>
+                            <stop offset="100%" stop-color="#FFFDF5" stop-opacity="0"/>
+                        </linearGradient>
+                        <linearGradient id="windowGlass" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#E4F4FD"/>
+                            <stop offset="100%" stop-color="#FFFDF7"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Padlószegély és meleg fa padló -->
+                    <rect x="0" y="328" width="1100" height="8" fill="#CFA97E"/>
+                    <rect x="0" y="336" width="1100" height="114" fill="#E6CAA4"/>
+
+                    <!-- =========================================================
+                         BAL OLDALI FALI KÉPEK (Kiemelten: TACSKÓ, Napocska, Szivárvány)
+                         ========================================================= -->
+                    <!-- 1. KÉP: CUKI BARNA TACSKÓ (Jól látható, nagyobb keretben) -->
+                    <g transform="translate(36, 22)">
+                        <!-- Képakasztó zsinór és szög -->
+                        <circle cx="52" cy="-6" r="3" fill="#7E5631"/>
+                        <polyline points="26,0 52,-6 78,0" fill="none" stroke="#8C6239" stroke-width="2"/>
+                        <!-- Fa képkeret -->
+                        <rect width="104" height="86" rx="10" fill="#FFFDF8" stroke="#A47549" stroke-width="4"/>
+                        <rect x="7" y="7" width="90" height="72" rx="6" fill="#EAF6FB"/>
+                        <!-- Zöld fűcsík a kép alján -->
+                        <path d="M7 64 Q52 58 97 64 L97 79 L7 79 Z" fill="#8CD1A6"/>
+                        <!-- Hosszúkás tacskó test -->
+                        <rect x="34" y="45" width="46" height="18" rx="9" fill="#8B4513"/>
+                        <!-- Tacskó mellkasa (világosabb cserbarna folt) -->
+                        <ellipse cx="38" cy="54" rx="7" ry="7" fill="#D98A4E"/>
+                        <!-- Rövid tacskó lábacskák -->
+                        <rect x="39" y="59" width="6" height="11" rx="3" fill="#6E350D"/>
+                        <rect x="48" y="60" width="6" height="10" rx="3" fill="#8B4513"/>
+                        <rect x="67" y="59" width="6" height="11" rx="3" fill="#6E350D"/>
+                        <rect x="75" y="60" width="6" height="10" rx="3" fill="#8B4513"/>
+                        <!-- Felfelé álló vidám tacskó farok -->
+                        <path d="M79 49 Q90 41 91 33" stroke="#8B4513" stroke-width="5" fill="none" stroke-linecap="round"/>
+                        <!-- Tacskó fej és hosszú orr -->
+                        <circle cx="33" cy="39" r="12" fill="#8B4513"/>
+                        <ellipse cx="21" cy="41" rx="10" ry="6.5" fill="#8B4513"/>
+                        <!-- Fekete nózi -->
+                        <circle cx="13" cy="39" r="3" fill="#2B1B10"/>
+                        <!-- Cserbarna pofafolt és szemöldök -->
+                        <circle cx="25" cy="44" r="3.5" fill="#D98A4E"/>
+                        <circle cx="29" cy="33" r="1.8" fill="#D98A4E"/>
+                        <!-- Nagy csillogó szem -->
+                        <circle cx="29" cy="37" r="2.6" fill="#2B1B10"/>
+                        <circle cx="28.2" cy="36.2" r="0.9" fill="#FFFFFF"/>
+                        <!-- Hosszú, lelógó tacskó fül -->
+                        <path d="M36 33 C45 33, 47 51, 39 54 C33 55, 32 42, 36 33 Z" fill="#5C2B0A"/>
+                        <!-- Piros nyakörv kis arany bilétával -->
+                        <line x1="34" y1="48" x2="43" y2="44" stroke="#E57A66" stroke-width="3.5" stroke-linecap="round"/>
+                        <circle cx="37" cy="50" r="2.2" fill="#F4C95D"/>
+                    </g>
+
+                    <!-- 2. KÉP: Mosolygó Napocska és Szivárvány -->
+                    <g transform="translate(154, 26)">
+                        <rect width="84" height="78" rx="9" fill="#FFFDF8" stroke="#C69C72" stroke-width="3.5"/>
+                        <rect x="6" y="6" width="72" height="66" rx="5" fill="#FFF9E6"/>
+                        <!-- Szivárvány ívek -->
+                        <path d="M16 62 A26 26 0 0 1 68 62" stroke="#E57A66" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <path d="M21 62 A21 21 0 0 1 63 62" stroke="#F4C95D" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <path d="M26 62 A16 16 0 0 1 58 62" stroke="#6BB896" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <!-- Kis napocska a sarokban -->
+                        <circle cx="24" cy="24" r="10" fill="#F4C95D"/>
+                        <circle cx="21" cy="23" r="1.4" fill="#4A3525"/>
+                        <circle cx="27" cy="23" r="1.4" fill="#4A3525"/>
+                        <path d="M21 27 Q24 30 27 27" stroke="#4A3525" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- =========================================================
+                         KÖZÉPSŐ NAGY ZÖLD TÁBLA SZÁMOKKAL ÉS BETŰKKEL
+                         ========================================================= -->
+                    <g transform="translate(264, 22)">
+                        <!-- Fa táblakeret -->
+                        <rect x="0" y="0" width="440" height="232" rx="16" fill="#A47549" stroke="#7E5631" stroke-width="3"/>
+                        <!-- Zöld táblafelület -->
+                        <rect x="12" y="12" width="416" height="208" rx="10" fill="#3B6E52"/>
+                        <!-- Krétaporos fényhatás -->
+                        <ellipse cx="140" cy="80" rx="110" ry="60" fill="#FFFFFF" opacity="0.04"/>
+
+                        <!-- Tábla bal felső része: BETŰK -->
+                        <text x="32" y="42" fill="#A7DFC1" font-family="Nunito, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">BETŰK</text>
+                        <text x="32" y="80" fill="#FFFDF8" font-family="Nunito, sans-serif" font-size="30" font-weight="900" letter-spacing="3">A a  B b</text>
+                        <text x="32" y="118" fill="#F7B2D9" font-family="Nunito, sans-serif" font-size="28" font-weight="900" letter-spacing="3">C c  D d</text>
+                        <text x="32" y="156" fill="#F4C95D" font-family="Nunito, sans-serif" font-size="26" font-weight="900" letter-spacing="3">E e  É é</text>
+
+                        <!-- Szaggatott kréta elválasztó vonal középen -->
+                        <line x1="216" y1="28" x2="216" y2="195" stroke="#FFFDF8" stroke-width="2.5" stroke-dasharray="7 7" opacity="0.45"/>
+
+                        <!-- Tábla jobb felső része: SZÁMOK -->
+                        <text x="236" y="42" fill="#A7DFC1" font-family="Nunito, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">SZÁMOK</text>
+                        <text x="236" y="80" fill="#F4C95D" font-family="Nunito, sans-serif" font-size="30" font-weight="900" letter-spacing="4">1  2  3  4</text>
+                        <text x="236" y="118" fill="#FFFDF8" font-family="Nunito, sans-serif" font-size="28" font-weight="900" letter-spacing="4">5  6  7  8</text>
+                        <text x="236" y="154" fill="#9AD9EA" font-family="Nunito, sans-serif" font-size="25" font-weight="900">2 + 3 = 5</text>
+
+                        <!-- Krétával rajzolt kis alma és csillag a tábla alján -->
+                        <circle cx="52" cy="186" r="11" fill="none" stroke="#E57A66" stroke-width="2.5"/>
+                        <path d="M52 175 Q56 168 61 171" stroke="#6BB896" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <polygon points="385,172 389,181 399,182 391,188 394,198 385,192 376,198 379,188 371,182 381,181" fill="none" stroke="#F4C95D" stroke-width="2.2"/>
+
+                        <!-- Krétatartó párkány színes krétákkal és szivaccsal -->
+                        <rect x="-6" y="224" width="452" height="12" rx="5" fill="#8C6239"/>
+                        <rect x="65" y="218" width="26" height="6" rx="3" fill="#FFFDF8"/>
+                        <rect x="102" y="218" width="22" height="6" rx="3" fill="#F4C95D"/>
+                        <rect x="134" y="218" width="24" height="6" rx="3" fill="#F7B2D9"/>
+                        <rect x="330" y="213" width="38" height="11" rx="3" fill="#D6B18A" stroke="#6E4B2A" stroke-width="1.5"/>
+                    </g>
+
+                    <!-- =========================================================
+                         RAJZOS FALIÓRA A TÁBLA ÉS AZ ABLAK KÖZÖTT
+                         ========================================================= -->
+                    <g transform="translate(766, 70)">
+                        <!-- Óra árnyéka -->
+                        <circle cx="3" cy="4" r="42" fill="#4A3525" opacity="0.12"/>
+                        <!-- Fa/mustársárga óratok -->
+                        <circle cx="0" cy="0" r="42" fill="#F4C95D" stroke="#8C6239" stroke-width="4"/>
+                        <!-- Fehér számlap -->
+                        <circle cx="0" cy="0" r="33" fill="#FFFDF8" stroke="#DFC3A2" stroke-width="2"/>
+                        <!-- Órajelzések -->
+                        <circle cx="0" cy="-25" r="2.5" fill="#E57A66"/>
+                        <circle cx="25" cy="0" r="2.5" fill="#4A3525"/>
+                        <circle cx="0" cy="25" r="2.5" fill="#4A3525"/>
+                        <circle cx="-25" cy="0" r="2.5" fill="#4A3525"/>
+                        <circle cx="13" cy="-21" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="21" cy="-13" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="21" cy="13" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="13" cy="21" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="-13" cy="21" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="-21" cy="13" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="-21" cy="-13" r="1.5" fill="#8A6A4B"/>
+                        <circle cx="-13" cy="-21" r="1.5" fill="#8A6A4B"/>
+                        <!-- Mutatók (10 óra 10 perc – vidám mosolygó állás) -->
+                        <line x1="0" y1="0" x2="-13" y2="-13" stroke="#4A3525" stroke-width="3.5" stroke-linecap="round"/>
+                        <line x1="0" y1="0" x2="18" y2="-16" stroke="#3B6E52" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="0" y1="4" x2="0" y2="-23" stroke="#E57A66" stroke-width="1.5" stroke-linecap="round"/>
+                        <!-- Középső csavar -->
+                        <circle cx="0" cy="0" r="3.5" fill="#E57A66"/>
+                    </g>
+
+                    <!-- =========================================================
+                         BAL OLDALI KÖNYVESPOLC (Földgömbbel, mackóval, könyvekkel)
+                         ========================================================= -->
+                    <g transform="translate(32, 174)">
+                        <circle cx="34" cy="-16" r="16" fill="#6BAED6" stroke="#4A3525" stroke-width="2"/>
+                        <path d="M26 -22 Q34 -18 38 -25 Q42 -15 32 -10 Z" fill="#6BB896"/>
+                        <path d="M22 -2 Q34 5 46 -2" stroke="#8C6239" stroke-width="3" fill="none"/>
+                        <line x1="34" y1="0" x2="34" y2="8" stroke="#8C6239" stroke-width="3"/>
+
+                        <path d="M84 8 L88 -6 L108 -6 L112 8 Z" fill="#D97A54" stroke="#4A3525" stroke-width="2"/>
+                        <ellipse cx="92" cy="-14" rx="10" ry="6" transform="rotate(-25 92 -14)" fill="#58A684"/>
+                        <ellipse cx="106" cy="-14" rx="10" ry="6" transform="rotate(25 106 -14)" fill="#6BB896"/>
+                        <ellipse cx="99" cy="-19" rx="7" ry="11" fill="#3B6E52"/>
+
+                        <rect x="0" y="8" width="142" height="152" rx="6" fill="#C6935E" stroke="#7E5631" stroke-width="3"/>
+                        <rect x="8" y="16" width="126" height="44" rx="3" fill="#9E6E40"/>
+                        <rect x="14" y="25" width="11" height="35" rx="2" fill="#E57A66"/>
+                        <rect x="26" y="22" width="12" height="38" rx="2" fill="#F4C95D"/>
+                        <rect x="39" y="27" width="10" height="33" rx="2" fill="#6BAED6"/>
+                        <circle cx="72" cy="46" r="11" fill="#B87A4B"/>
+                        <circle cx="72" cy="33" r="8" fill="#B87A4B"/>
+                        <circle cx="65" cy="27" r="3.5" fill="#B87A4B"/>
+                        <circle cx="79" cy="27" r="3.5" fill="#B87A4B"/>
+                        <circle cx="72" cy="35" r="3" fill="#FDE0CB"/>
+                        <rect x="96" y="24" width="11" height="36" rx="2" fill="#6BB896"/>
+                        <rect x="108" y="21" width="12" height="39" rx="2" fill="#D699B8"/>
+                        <rect x="121" y="26" width="10" height="34" rx="2" fill="#F4C95D"/>
+
+                        <rect x="8" y="68" width="126" height="42" rx="3" fill="#9E6E40"/>
+                        <rect x="18" y="92" width="44" height="8" rx="2" fill="#6BAED6"/>
+                        <rect x="15" y="100" width="48" height="9" rx="2" fill="#E57A66"/>
+                        <rect x="82" y="79" width="12" height="31" rx="2" fill="#F4C95D"/>
+                        <rect x="96" y="82" width="14" height="28" rx="2" fill="#6BB896"/>
+
+                        <rect x="8" y="118" width="126" height="36" rx="3" fill="#9E6E40"/>
+                        <rect x="14" y="124" width="52" height="28" rx="4" fill="#6BAED6"/>
+                        <rect x="74" y="124" width="54" height="28" rx="4" fill="#77B876"/>
+                    </g>
+
+                    <!-- Színes ceruzatartó -->
+                    <g transform="translate(188, 294)">
+                        <line x1="8" y1="16" x2="4" y2="-4" stroke="#E57A66" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="15" y1="16" x2="14" y2="-8" stroke="#F4C95D" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="22" y1="16" x2="24" y2="-5" stroke="#6BAED6" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="28" y1="16" x2="32" y2="-2" stroke="#6BB896" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M4 14 L32 14 L29 40 L7 40 Z" fill="#D97A54" stroke="#7E5631" stroke-width="2"/>
+                    </g>
+
+                    <!-- =========================================================
+                         JOBB OLDALI NAPFÉNYES ABLAKOK
+                         ========================================================= -->
+                    <g transform="translate(830, 24)">
+                        <rect x="0" y="0" width="115" height="165" rx="8" fill="url(#windowGlass)" stroke="#C69C72" stroke-width="4"/>
+                        <line x1="57.5" y1="0" x2="57.5" y2="165" stroke="#C69C72" stroke-width="3.5"/>
+                        <line x1="0" y1="82.5" x2="115" y2="82.5" stroke="#C69C72" stroke-width="3.5"/>
+                        <rect x="-6" y="162" width="127" height="10" rx="4" fill="#DFC3A2"/>
+
+                        <rect x="132" y="0" width="115" height="165" rx="8" fill="url(#windowGlass)" stroke="#C69C72" stroke-width="4"/>
+                        <line x1="189.5" y1="0" x2="189.5" y2="165" stroke="#C69C72" stroke-width="3.5"/>
+                        <line x1="132" y1="82.5" x2="247" y2="82.5" stroke="#C69C72" stroke-width="3.5"/>
+                        <rect x="126" y="162" width="127" height="10" rx="4" fill="#DFC3A2"/>
+
+                        <!-- Kis cserepes virág az ablakpárkányon -->
+                        <path d="M196 162 L200 144 L222 144 L226 162 Z" fill="#D97A54" stroke="#7E5631" stroke-width="2"/>
+                        <ellipse cx="204" cy="136" rx="11" ry="6" transform="rotate(-25 204 136)" fill="#6BB896"/>
+                        <ellipse cx="220" cy="136" rx="11" ry="6" transform="rotate(25 220 136)" fill="#58A684"/>
+                        <ellipse cx="212" cy="130" rx="7" ry="12" fill="#3B6E52"/>
+                    </g>
+
+                    <polygon points="830,24 1077,24 890,410 610,410" fill="url(#sunRay)"/>
+
+                    <!-- MINTÁS TANTERMI SZŐNYEG -->
+                    <g transform="translate(260, 354)">
+                        <polygon points="60,0 520,0 580,88 0,88" fill="#77B8C4" stroke="#53939E" stroke-width="3"/>
+                        <polygon points="72,8 508,8 558,78 22,78" fill="none" stroke="#FFFDF8" stroke-width="3" stroke-dasharray="14 10"/>
+                        <circle cx="140" cy="44" r="14" fill="#F4C95D" opacity="0.85"/>
+                        <rect x="275" y="30" width="28" height="24" rx="6" fill="#E57A66" opacity="0.8"/>
+                        <circle cx="430" cy="46" r="15" fill="#6BB896" opacity="0.85"/>
+                    </g>
+
+                    <!-- BABZSÁKOK -->
+                    <path d="M10 370 C10 330, 118 330, 126 374 C130 396, 95 404, 58 404 C22 404, 10 392, 10 370 Z" fill="#E57A66" stroke="#9E4738" stroke-width="2.5"/>
+                    <path d="M32 356 Q68 368 105 354" stroke="#B85646" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M-15 422 C-15 380, 105 380, 115 426 C118 446, 80 450, 42 450 C4 450, -15 442, -15 422 Z" fill="#6BB896" stroke="#3B7A5E" stroke-width="2.5"/>
+                    <path d="M975 412 C985 366, 1110 366, 1115 416 C1118 442, 1075 450, 1035 450 C995 450, 970 436, 975 412 Z" fill="#D699B8" stroke="#8F5472" stroke-width="2.5"/>
+                    <path d="M1002 392 Q1045 405 1088 389" stroke="#A66887" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+
+                <!-- ELŐTÉR TARTALOM (Úgy rendezve, hogy a tacskós kép, a zöld tábla és a falióra szabadon látszódjon!) -->
+                <div class="relative z-10 grid grid-cols-12 gap-4 items-end min-h-[395px]">
+                    
+                    <!-- BAL ALSÓ: Kompakt üdvözlő kártya a könyvespolc előtt (a felette lévő tacskós kép szabadon látszik!) -->
+                    <div class="col-span-5 mb-2">
+                        <div class="bg-[#FFFDF8]/95 backdrop-blur-xs border-[2.5px] border-[#DFC3A2] rounded-3xl p-4 xl:p-5 shadow-md">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="bg-coral text-white text-xs font-black px-3 py-0.5 rounded-full">
+                                    👋 Szia! Kata néni vagyok!
+                                </span>
+                                <span class="text-xs font-extrabold text-[#8A6A4B]">1. osztály</span>
+                            </div>
+                            <p id="kata-desktop-speech" class="text-sm xl:text-base font-extrabold text-cocoa leading-relaxed">
+                                „De jó, hogy benéztél a tantermembe! Válassz lent egy tantárgyat az Olvasás, az Írás vagy a Számolás polcáról!”
+                            </p>
+                            <div class="mt-3 pt-2.5 border-t border-[#EFE3D2] flex flex-wrap items-center gap-2">
+                                <span class="inline-flex items-center gap-1 text-xs font-extrabold bg-[#EAF7F0] text-[#28664B] px-2.5 py-1 rounded-xl border border-[#B7E2CA]">
+                                    <span>📖</span>
+                                    <span>Olvasás • Írás • Számolás</span>
+                                </span>
+                                <span class="inline-flex items-center gap-1 text-xs font-extrabold bg-[#FFF7E2] text-[#7A5214] px-2.5 py-1 rounded-xl border border-[#F4C95D]">
+                                    <span>⭐</span>
+                                    <span>Csillaggyűjtő</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JOBB-KÖZÉP: HÁTTÉR NÉLKÜLI KATA NÉNI A SZŐNYEGEN ÁLLVA (A zöld tábla és a falióra jól látszik mögötte/mellette) -->
+                    <div class="col-span-4 col-start-7 flex flex-col items-center justify-end relative">
+                        <div id="kata-desktop-fullbody" class="w-52 xl:w-60 h-72 xl:h-80 flex items-end justify-center drop-shadow-[0_10px_14px_rgba(74,53,37,0.18)] transition-transform duration-300 hover:scale-[1.03]"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- A3. TANTÁRGYI SZŰRŐ ÉS POLCRENDSZER (Olvasás, Írás, Számolás) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
+                <div>
+                    <h3 class="text-lg sm:text-xl lg:text-2xl font-black text-cocoa flex items-center gap-2">
+                        <span>🎒</span>
+                        <span>Mit gyakoroljunk ma?</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm font-bold text-[#8A6A4B]">Kattints egy tantárgyra vagy válassz közvetlenül a kártyák közül!</p>
+                </div>
+
+                <!-- Tantárgyi szűrő gombok -->
+                <div class="flex flex-wrap items-center gap-2" id="subject-filter-bar">
+                    <button onclick="filterSubjects('all', this)" class="filter-pill active bg-chalkboard text-white font-black text-xs sm:text-sm px-3.5 py-2 rounded-xl shadow-2xs cursor-pointer transition-all">
+                        🏫 Összes
+                    </button>
+                    <button onclick="filterSubjects('olvasas', this)" class="filter-pill bg-[#FFFDF8] hover:bg-[#EDF6FB] text-cocoa border border-[#DFC3A2] font-extrabold text-xs sm:text-sm px-3.5 py-2 rounded-xl cursor-pointer transition-all">
+                        📖 Olvasás
+                    </button>
+                    <button onclick="filterSubjects('iras', this)" class="filter-pill bg-[#FFFDF8] hover:bg-[#F7EFFA] text-cocoa border border-[#DFC3A2] font-extrabold text-xs sm:text-sm px-3.5 py-2 rounded-xl cursor-pointer transition-all">
+                        ✏️ Írás
+                    </button>
+                    <button onclick="filterSubjects('szamolas', this)" class="filter-pill bg-[#FFFDF8] hover:bg-[#FFF7E2] text-cocoa border border-[#DFC3A2] font-extrabold text-xs sm:text-sm px-3.5 py-2 rounded-xl cursor-pointer transition-all">
+                        🔢 Számolás
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kártyák rácsa (Tiszta linkes szerkezet: minden új feladat egy külön HTML fájl lesz) -->
+            <section id="games-shelf-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+
+                <!-- 1. POLC: OLVASÁS (Hely előkészítve) -->
+                <div data-subject="olvasas" onclick="showComingSoon('Olvasás – Betű- és szótagkereső', 'Éppen most válogatom össze a legkedvesebb elsős szótagokat és rövid szavakat! Hamarosan itt lesz a helyén! 📖')" 
+                     class="game-card storybook-card rounded-3xl p-5 sm:p-6 cursor-pointer hover:border-skyroom transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="bg-skyroom/20 text-[#275D7D] text-xs font-black px-3 py-1 rounded-full">
+                                📖 OLVASÁS • 1. OSZTÁLY
+                            </span>
+                            <span class="bg-[#FFF7E2] text-[#9E6B1E] text-[11px] font-black px-2.5 py-0.5 rounded-lg border border-[#F4C95D]">
+                                Készül
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3.5 mb-3">
+                            <div class="w-14 h-14 rounded-2xl bg-skyroom text-white flex items-center justify-center text-2xl shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                                🔤
+                            </div>
+                            <div>
+                                <h4 class="text-lg sm:text-xl font-black text-cocoa">Betű- és szótagolvasó</h4>
+                                <p class="text-xs font-extrabold text-[#275D7D]">Hamarosan indul!</p>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-sm font-bold text-[#6E533B] leading-relaxed">
+                            Kisbetűk, nagybetűk párosítása, szótagolás és első rövid szavak vidám olvasása képekkel.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-[#EFE3D2] flex items-center justify-between text-xs font-extrabold text-[#7A6048]">
+                        <span>Fájlnév helye: <code class="bg-[#FDF6E9] px-1.5 py-0.5 rounded">olvasas-1.html</code></span>
+                        <span>⏳</span>
+                    </div>
+                </div>
+
+                <!-- 2. POLC: ÍRÁS (Hely előkészítve) -->
+                <div data-subject="iras" onclick="showComingSoon('Írás – Betűpótló és helyesírás', 'Már készülnek a kis- és nagybetűs, valamint a rövid-hosszú magánhangzós játékos feladatok az elsősöknek! ✏️')" 
+                     class="game-card storybook-card rounded-3xl p-5 sm:p-6 cursor-pointer hover:border-lavender transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="bg-lavender/25 text-[#7A3E5D] text-xs font-black px-3 py-1 rounded-full">
+                                ✏️ ÍRÁS • 1. OSZTÁLY
+                            </span>
+                            <span class="bg-[#FFF7E2] text-[#9E6B1E] text-[11px] font-black px-2.5 py-0.5 rounded-lg border border-[#F4C95D]">
+                                Készül
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3.5 mb-3">
+                            <div class="w-14 h-14 rounded-2xl bg-lavender text-white flex items-center justify-center text-2xl shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                                ✍️
+                            </div>
+                            <div>
+                                <h4 class="text-lg sm:text-xl font-black text-cocoa">Betűpótló műhely</h4>
+                                <p class="text-xs font-extrabold text-[#7A3E5D]">Hamarosan indul!</p>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-sm font-bold text-[#6E533B] leading-relaxed">
+                            Hiányzó betűk pótlása, magánhangzók és mássalhangzók felismerése játékos képekkel.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-[#EFE3D2] flex items-center justify-between text-xs font-extrabold text-[#7A6048]">
+                        <span>Fájlnév helye: <code class="bg-[#FDF6E9] px-1.5 py-0.5 rounded">iras-1.html</code></span>
+                        <span>⏳</span>
+                    </div>
+                </div>
+
+                <!-- 3. POLC: SZÁMOLÁS (Hely előkészítve) -->
+                <div data-subject="szamolas" onclick="showComingSoon('Számolás – Számkaland 10-es és 20-as körben', 'Készülnek a számolós rakéták, az összeadás és kivonás játékos feladatai az elsősöknek! 🔢')" 
+                     class="game-card storybook-card rounded-3xl p-5 sm:p-6 cursor-pointer hover:border-sunbeam transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="bg-sunbeam/35 text-[#7A5214] text-xs font-black px-3 py-1 rounded-full">
+                                🔢 SZÁMOLÁS • 1. OSZTÁLY
+                            </span>
+                            <span class="bg-[#FFF7E2] text-[#9E6B1E] text-[11px] font-black px-2.5 py-0.5 rounded-lg border border-[#F4C95D]">
+                                Készül
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3.5 mb-3">
+                            <div class="w-14 h-14 rounded-2xl bg-sunbeam text-cocoa flex items-center justify-center text-2xl shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                                🧮
+                            </div>
+                            <div>
+                                <h4 class="text-lg sm:text-xl font-black text-cocoa">Számkaland 10-es körben</h4>
+                                <p class="text-xs font-extrabold text-[#9E6B1E]">Hamarosan indul!</p>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-sm font-bold text-[#6E533B] leading-relaxed">
+                            Számlálás, relációs jelek (&lt;, &gt;, =), összeadás és kivonás játékos feladatokkal.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-[#EFE3D2] flex items-center justify-between text-xs font-extrabold text-[#7A6048]">
+                        <span>Fájlnév helye: <code class="bg-[#FDF6E9] px-1.5 py-0.5 rounded">szamolas-1.html</code></span>
+                        <span>⏳</span>
+                    </div>
+                </div>
+
+                <!-- KÜLÖNÁLLÓ JÁTÉK LINK: Szólás- és Közmondáskaland (külön szolasok.html fájlra mutat) -->
+                <a data-subject="olvasas" href="szolasok.html" class="game-card md:col-span-3 group bg-[#FFFDF8] hover:bg-[#F4FBF7] border-2 border-[#B7E2CA] hover:border-mint rounded-3xl p-4 sm:p-5 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#F4C95D] to-[#E57A66] text-white flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                            🦉
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-0.5">
+                                <h4 class="text-base sm:text-lg font-black text-cocoa group-hover:text-[#28664B] transition-colors">
+                                    Szólás- és Közmondáskaland
+                                </h4>
+                                <span class="bg-mint text-white text-[11px] font-black px-2.5 py-0.5 rounded-full">
+                                    ✅ ELÉRHETŐ • Külön játékfájl
+                                </span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-bold text-[#6E533B] leading-snug">
+                                Már elkészült játékos szólásgyakorló (szülői közös olvasáshoz vagy nagyobb testvéreknek).
+                            </p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center justify-center gap-1.5 bg-chalkboard group-hover:bg-[#2F5A42] text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shrink-0 transition-colors">
+                        <span>Megnyitás</span>
+                        <span>→</span>
+                    </span>
+                </a>
+
+            </section>
+
+            <!-- iOS Telepítés sáv -->
+            <section class="bg-[#FFFDF8]/85 border border-[#DFC3A2] rounded-2xl p-3.5 lg:px-5 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2 text-[#7A6048] font-bold">
+                    <span>🌻</span>
+                    <span>Kata néni tanterme • 1. osztályos gyakorlófelület</span>
+                </div>
+
+                <button onclick="openInstallModal()" class="inline-flex items-center gap-1.5 font-extrabold text-cocoa bg-[#F5E6D3] hover:bg-[#EBD3B7] px-3 py-1.5 rounded-xl transition-colors cursor-pointer">
+                    <span>📱</span>
+                    <span>Főképernyőre helyezés</span>
+                </button>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- =====================================================================
+         3. MODÁLIS ABLAKOK
+         ===================================================================== -->
+    <div id="coming-soon-modal" class="hidden fixed inset-0 z-50 bg-[#4A3525]/50 backdrop-blur-xs flex items-center justify-center p-4" onclick="closeModalOnBackdrop(event, 'coming-soon-modal')">
+        <div class="storybook-card w-full max-w-md rounded-3xl p-6 animate-pop relative text-center">
+            <button onclick="closeModal('coming-soon-modal')" aria-label="Bezárás" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F5E6D3] hover:bg-[#EBD3B7] text-cocoa font-black flex items-center justify-center cursor-pointer">
+                ✕
+            </button>
+
+            <div id="kata-coming-soon-avatar" class="w-24 h-24 rounded-3xl bg-[#FDEBD0] border-[3px] border-[#C69C72] overflow-hidden mx-auto mb-3 shadow-sm"></div>
+            <span class="inline-block bg-sunbeam/40 text-[#7A5214] text-xs font-black px-3 py-1 rounded-full mb-2">
+                Kata néni üzenete
+            </span>
+            <h3 id="coming-soon-title" class="text-xl sm:text-2xl font-black text-cocoa mb-2">Hamarosan indul!</h3>
+            <p id="coming-soon-text" class="text-sm sm:text-base font-bold text-[#6E533B] leading-relaxed mb-5">
+                Éppen most készítem elő ezt a játékos feladatot nektek! Hamarosan kipróbálhatod!
+            </p>
+            <button onclick="closeModal('coming-soon-modal')" class="storybook-btn w-full bg-chalkboard hover:bg-[#2F5A42] text-white font-black py-3.5 rounded-2xl shadow-sm cursor-pointer">
+                Rendben, várom! 😊
+            </button>
+        </div>
+    </div>
+
+    <div id="install-modal" class="hidden fixed inset-0 z-50 bg-[#4A3525]/50 backdrop-blur-xs flex items-center justify-center p-4" onclick="closeModalOnBackdrop(event, 'install-modal')">
+        <div class="storybook-card w-full max-w-md rounded-3xl p-6 animate-pop relative text-left">
+            <button onclick="closeModal('install-modal')" aria-label="Bezárás" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F5E6D3] hover:bg-[#EBD3B7] text-cocoa font-black flex items-center justify-center cursor-pointer">
+                ✕
+            </button>
+
+            <div class="flex flex-col items-center text-center mb-4">
+                <img id="icon-preview-img" src="" alt="Kata néni tanterme ikon" class="w-20 h-20 rounded-[22px] shadow-md border-2 border-[#DFC3A2] mb-2">
+                <h3 class="text-xl font-black text-cocoa">Tedd ki a főképernyőre!</h3>
+                <p class="text-xs sm:text-sm text-[#6E533B] font-bold mt-1">
+                    Így a gyerekek egyetlen érintéssel, teljes képernyőn nyithatják meg Kata néni tantermét!
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-3 bg-[#FDF6E9] p-4 rounded-2xl border border-[#DFC3A2] text-sm">
+                <div class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-chalkboard text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <p class="font-bold text-cocoa leading-snug">Nyisd meg az oldalt iPhone vagy iPad <span class="text-chalkboard font-black">Safari</span> böngészőjében.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-chalkboard text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <p class="font-bold text-cocoa leading-snug">Koppints a <span class="bg-white border border-[#DFC3A2] px-2 py-0.5 rounded-md font-black">Megosztás ⬆️</span> ikonra.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-chalkboard text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <p class="font-bold text-cocoa leading-snug">Válaszd a <span class="bg-white border border-[#DFC3A2] px-2 py-0.5 rounded-md font-black">Hozzáadás a főképernyőhöz ➕</span> gombot!</p>
+                </div>
+            </div>
+
+            <button onclick="closeModal('install-modal')" class="storybook-btn w-full mt-5 bg-chalkboard hover:bg-[#2F5A42] text-white font-black py-3.5 rounded-2xl shadow-sm cursor-pointer">
+                Értem, köszönöm! 👍
+            </button>
+        </div>
+    </div>
+
+    <footer class="w-full max-w-3xl lg:max-w-6xl mx-auto text-center text-xs font-bold text-[#9A7B5C] py-2">
+        Kata néni tanterme • Szeretettel készítve az 1. osztályos diákoknak
+    </footer>
+
+    <!-- =====================================================================
+         4. JAVASCRIPT LOGIKA (Csak a főoldal működéséhez szükséges tiszta kód)
+         ===================================================================== -->
+    <script>
+        // A gyökérkönyvtárban (a HTML fájl mellett) található Kata néni képfájl neve
+        const KATA_IMAGE_FILENAME = 'IMG_0488.jpeg';
+        let currentKataImageUrl = KATA_IMAGE_FILENAME;
+
+        /**
+         * Intelligens háttéreltávolító: eltünteti a külső fehér vagy szürke-fehér
+         * sakktáblás hátteret flood-fill algoritmussal, majd szorosan körbevágja.
+         */
+        function removeBackgroundFromImage(imgSource) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = function() {
+                    const maxDim = 900;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxDim || h > maxDim) {
+                        const scale = maxDim / Math.max(w, h);
+                        w = Math.round(w * scale);
+                        h = Math.round(h * scale);
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+
+                    let imgData;
+                    try {
+                        imgData = ctx.getImageData(0, 0, w, h);
+                    } catch (e) {
+                        resolve(imgSource);
+                        return;
+                    }
+                    const data = imgData.data;
+
+                    function isCheckerOrLightBg(idx) {
+                        const r = data[idx];
+                        const g = data[idx + 1];
+                        const b = data[idx + 2];
+                        const a = data[idx + 3];
+                        if (a < 20) return true;
+                        const maxC = Math.max(r, g, b);
+                        const minC = Math.min(r, g, b);
+                        const sat = maxC - minC;
+                        return sat <= 24 && minC >= 160;
+                    }
+
+                    const visited = new Uint8Array(w * h);
+                    const stack = [];
+
+                    for (let x = 0; x < w; x++) {
+                        stack.push(x, 0);
+                        stack.push(x, h - 1);
+                    }
+                    for (let y = 0; y < h; y++) {
+                        stack.push(0, y);
+                        stack.push(w - 1, y);
+                    }
+
+                    while (stack.length > 0) {
+                        const y = stack.pop();
+                        const x = stack.pop();
+                        if (x < 0 || x >= w || y < 0 || y >= h) continue;
+                        const pos = y * w + x;
+                        if (visited[pos]) continue;
+                        visited[pos] = 1;
+
+                        const idx = pos * 4;
+                        if (isCheckerOrLightBg(idx)) {
+                            data[idx + 3] = 0;
+                            stack.push(x + 1, y);
+                            stack.push(x - 1, y);
+                            stack.push(x, y + 1);
+                            stack.push(x, y - 1);
+                        }
+                    }
+
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            const pos = y * w + x;
+                            const idx = pos * 4;
+                            if (data[idx + 3] > 0 && isCheckerOrLightBg(idx)) {
+                                const neighborsTransparent =
+                                    data[((y - 1) * w + x) * 4 + 3] === 0 ||
+                                    data[((y + 1) * w + x) * 4 + 3] === 0 ||
+                                    data[(y * w + (x - 1)) * 4 + 3] === 0 ||
+                                    data[(y * w + (x + 1)) * 4 + 3] === 0;
+                                if (neighborsTransparent) {
+                                    data[idx + 3] = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    ctx.putImageData(imgData, 0, 0);
+
+                    let minX = w, minY = h, maxX = 0, maxY = 0;
+                    let foundOpaque = false;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            if (data[(y * w + x) * 4 + 3] > 20) {
+                                if (x < minX) minX = x;
+                                if (x > maxX) maxX = x;
+                                if (y < minY) minY = y;
+                                if (y > maxY) maxY = y;
+                                foundOpaque = true;
+                            }
+                        }
+                    }
+
+                    if (!foundOpaque) {
+                        resolve(imgSource);
+                        return;
+                    }
+
+                    const pad = 4;
+                    minX = Math.max(0, minX - pad);
+                    minY = Math.max(0, minY - pad);
+                    maxX = Math.min(w - 1, maxX + pad);
+                    maxY = Math.min(h - 1, maxY + pad);
+
+                    const trimW = maxX - minX + 1;
+                    const trimH = maxY - minY + 1;
+
+                    const trimCanvas = document.createElement('canvas');
+                    trimCanvas.width = trimW;
+                    trimCanvas.height = trimH;
+                    const trimCtx = trimCanvas.getContext('2d');
+                    trimCtx.drawImage(canvas, minX, minY, trimW, trimH, 0, 0, trimW, trimH);
+
+                    resolve(trimCanvas.toDataURL('image/png'));
+                };
+                img.onerror = function() {
+                    resolve(imgSource);
+                };
+                img.src = imgSource;
+            });
+        }
+
+        function renderKataAvatar(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = `<img src="${currentKataImageUrl}" alt="Kata néni" class="w-full h-full object-cover object-top">`;
+        }
+
+        function renderKataFullBody(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = `<img src="${currentKataImageUrl}" alt="Kata néni" class="max-h-full w-auto object-contain object-bottom">`;
+        }
+
+        function refreshAllKataAvatars() {
+            renderKataAvatar('kata-home-avatar');
+            renderKataAvatar('kata-coming-soon-avatar');
+            renderKataFullBody('kata-desktop-fullbody');
+        }
+
+        function initKataCharacter() {
+            refreshAllKataAvatars();
+            removeBackgroundFromImage(KATA_IMAGE_FILENAME).then((cleanPngUrl) => {
+                if (cleanPngUrl && cleanPngUrl !== KATA_IMAGE_FILENAME) {
+                    currentKataImageUrl = cleanPngUrl;
+                    refreshAllKataAvatars();
+                }
+            });
+        }
+
+        // Összegyűjtött csillagok megjelenítése (a különálló játékok is ezt a kulcsot növelik!)
+        const totalStarsCountEl = document.getElementById('total-stars-count');
+        function updateStarsDisplay() {
+            const totalStars = parseInt(localStorage.getItem('kata_neni_total_stars') || '0', 10);
+            if (totalStarsCountEl) {
+                totalStarsCountEl.textContent = totalStars;
+            }
+        }
+
+        // Tantárgyi szűrő kezelése (Összes / Olvasás / Írás / Számolás)
+        function filterSubjects(subject, clickedBtn) {
+            const buttons = document.querySelectorAll('#subject-filter-bar .filter-pill');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-chalkboard', 'text-white');
+                btn.classList.add('bg-[#FFFDF8]', 'text-cocoa', 'border', 'border-[#DFC3A2]');
+            });
+
+            if (clickedBtn) {
+                clickedBtn.classList.remove('bg-[#FFFDF8]', 'text-cocoa', 'border', 'border-[#DFC3A2]');
+                clickedBtn.classList.add('bg-chalkboard', 'text-white');
+            }
+
+            const cards = document.querySelectorAll('#games-shelf-grid .game-card');
+            cards.forEach(card => {
+                if (subject === 'all' || card.dataset.subject === subject) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Modális ablakok
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function closeModalOnBackdrop(event, modalId) {
+            if (event.target.id === modalId) {
+                closeModal(modalId);
+            }
+        }
+
+        function showComingSoon(title, message) {
+            document.getElementById('coming-soon-title').textContent = title;
+            document.getElementById('coming-soon-text').textContent = message;
+            renderKataAvatar('kata-coming-soon-avatar');
+            document.getElementById('coming-soon-modal').classList.remove('hidden');
+        }
+
+        function openInstallModal() {
+            document.getElementById('install-modal').classList.remove('hidden');
+        }
+
+        function generateAppIcon() {
+            const size = 512;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#3B6E52';
+            ctx.fillRect(0, 0, size, size);
+
+            ctx.strokeStyle = '#A47549';
+            ctx.lineWidth = 28;
+            ctx.strokeRect(14, 14, size - 28, size - 28);
+
+            ctx.font = '230px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🏫', size / 2, size / 2 + 12);
+
+            const pngDataUrl = canvas.toDataURL('image/png');
+            const appleLink = document.getElementById('apple-touch-icon-link');
+            if (appleLink) appleLink.href = pngDataUrl;
+            const previewImg = document.getElementById('icon-preview-img');
+            if (previewImg) previewImg.src = pngDataUrl;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initKataCharacter();
+            updateStarsDisplay();
+            generateAppIcon();
+        });
+
+        // Ha a gyerek visszalép egy játékból a böngésző Vissza gombjával, frissüljön a csillagszám
+        window.addEventListener('pageshow', updateStarsDisplay);
+    </script>
+</body>
+</html>
