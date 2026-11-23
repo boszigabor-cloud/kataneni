@@ -114,12 +114,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-
         @keyframes gentleFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-5px); }
@@ -129,41 +123,8 @@
             animation: popIn 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        .animate-shake {
-            animation: shake 0.4s ease-in-out;
-        }
-
         .animate-float {
             animation: gentleFloat 3.4s ease-in-out infinite;
-        }
-
-        /* Szókiegészítő üres hely stílusa */
-        .blank-slot {
-            display: inline-block;
-            min-width: 115px;
-            border-bottom: 3px dashed #3B6E52;
-            color: #3B6E52;
-            font-weight: 900;
-            padding: 0 10px;
-            margin: 0 4px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .blank-filled-correct {
-            border-bottom: 3px solid #2E7D5B;
-            background-color: #DDF3E8;
-            color: #1F5C41;
-            border-radius: 10px;
-            padding: 2px 12px;
-        }
-
-        .blank-filled-wrong {
-            border-bottom: 3px solid #D9534F;
-            background-color: #FDE4E1;
-            color: #9E2A2B;
-            border-radius: 10px;
-            padding: 2px 12px;
         }
     </style>
 </head>
@@ -198,7 +159,7 @@
     </header>
 
     <!-- =====================================================================
-         2. FŐ TARTALMI TERÜLET (Különálló főoldal: index.html)
+         2. FŐ TARTALMI TERÜLET
          ===================================================================== -->
     <main class="w-full max-w-3xl lg:max-w-6xl mx-auto my-auto py-4 sm:py-6">
 
@@ -216,7 +177,7 @@
 
                     <div class="flex-1 bg-[#FDF6E9] border-2 border-[#E3C8A8] rounded-2xl p-3.5 sm:p-4 relative text-center sm:text-left">
                         <p id="kata-home-speech" class="text-sm sm:text-base font-extrabold text-cocoa leading-relaxed">
-                            „Szervusz kis elsős! De jó, hogy itt vagy! Válassz egy tantárgyi polcot, és gyakoroljunk együtt játékosan!”
+                            „Szervusz kis elsős! Már el is készült az első Olvasáskaland játékunk (a, i, í, m, o, ó, e betűkből)! Próbáld ki!”
                         </p>
                         <div class="mt-2.5 flex flex-wrap items-center justify-center sm:justify-start gap-2">
                             <span class="inline-flex items-center gap-1 text-[11px] font-extrabold bg-mint/20 text-[#28664B] px-2.5 py-1 rounded-lg">
@@ -249,7 +210,6 @@
             <!-- A2. ASZTALI TANTERMI PANORÁMA ÉS TÉRSUGALLAT -->
             <section class="hidden lg:block classroom-stage rounded-[34px] p-6 xl:p-8 relative overflow-hidden min-h-[450px]">
                 
-                <!-- HÁTTÉR TANTERMI ILLUSZTRÁCIÓ (Jól látható zöld tábla számokkal/betűkkel, tacskós kép, rajzos óra) -->
                 <svg viewBox="0 0 1100 450" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
                     <defs>
                         <linearGradient id="sunRay" x1="1" y1="0" x2="0" y2="1">
@@ -266,44 +226,28 @@
                     <rect x="0" y="328" width="1100" height="8" fill="#CFA97E"/>
                     <rect x="0" y="336" width="1100" height="114" fill="#E6CAA4"/>
 
-                    <!-- =========================================================
-                         BAL OLDALI FALI KÉPEK (Kiemelten: TACSKÓ, Napocska, Szivárvány)
-                         ========================================================= -->
-                    <!-- 1. KÉP: CUKI BARNA TACSKÓ (Jól látható, nagyobb keretben) -->
+                    <!-- 1. KÉP: CUKI BARNA TACSKÓ -->
                     <g transform="translate(36, 22)">
-                        <!-- Képakasztó zsinór és szög -->
                         <circle cx="52" cy="-6" r="3" fill="#7E5631"/>
                         <polyline points="26,0 52,-6 78,0" fill="none" stroke="#8C6239" stroke-width="2"/>
-                        <!-- Fa képkeret -->
                         <rect width="104" height="86" rx="10" fill="#FFFDF8" stroke="#A47549" stroke-width="4"/>
                         <rect x="7" y="7" width="90" height="72" rx="6" fill="#EAF6FB"/>
-                        <!-- Zöld fűcsík a kép alján -->
                         <path d="M7 64 Q52 58 97 64 L97 79 L7 79 Z" fill="#8CD1A6"/>
-                        <!-- Hosszúkás tacskó test -->
                         <rect x="34" y="45" width="46" height="18" rx="9" fill="#8B4513"/>
-                        <!-- Tacskó mellkasa (világosabb cserbarna folt) -->
                         <ellipse cx="38" cy="54" rx="7" ry="7" fill="#D98A4E"/>
-                        <!-- Rövid tacskó lábacskák -->
                         <rect x="39" y="59" width="6" height="11" rx="3" fill="#6E350D"/>
                         <rect x="48" y="60" width="6" height="10" rx="3" fill="#8B4513"/>
                         <rect x="67" y="59" width="6" height="11" rx="3" fill="#6E350D"/>
                         <rect x="75" y="60" width="6" height="10" rx="3" fill="#8B4513"/>
-                        <!-- Felfelé álló vidám tacskó farok -->
                         <path d="M79 49 Q90 41 91 33" stroke="#8B4513" stroke-width="5" fill="none" stroke-linecap="round"/>
-                        <!-- Tacskó fej és hosszú orr -->
                         <circle cx="33" cy="39" r="12" fill="#8B4513"/>
                         <ellipse cx="21" cy="41" rx="10" ry="6.5" fill="#8B4513"/>
-                        <!-- Fekete nózi -->
                         <circle cx="13" cy="39" r="3" fill="#2B1B10"/>
-                        <!-- Cserbarna pofafolt és szemöldök -->
                         <circle cx="25" cy="44" r="3.5" fill="#D98A4E"/>
                         <circle cx="29" cy="33" r="1.8" fill="#D98A4E"/>
-                        <!-- Nagy csillogó szem -->
                         <circle cx="29" cy="37" r="2.6" fill="#2B1B10"/>
                         <circle cx="28.2" cy="36.2" r="0.9" fill="#FFFFFF"/>
-                        <!-- Hosszú, lelógó tacskó fül -->
                         <path d="M36 33 C45 33, 47 51, 39 54 C33 55, 32 42, 36 33 Z" fill="#5C2B0A"/>
-                        <!-- Piros nyakörv kis arany bilétával -->
                         <line x1="34" y1="48" x2="43" y2="44" stroke="#E57A66" stroke-width="3.5" stroke-linecap="round"/>
                         <circle cx="37" cy="50" r="2.2" fill="#F4C95D"/>
                     </g>
@@ -312,49 +256,37 @@
                     <g transform="translate(154, 26)">
                         <rect width="84" height="78" rx="9" fill="#FFFDF8" stroke="#C69C72" stroke-width="3.5"/>
                         <rect x="6" y="6" width="72" height="66" rx="5" fill="#FFF9E6"/>
-                        <!-- Szivárvány ívek -->
                         <path d="M16 62 A26 26 0 0 1 68 62" stroke="#E57A66" stroke-width="4.5" fill="none" stroke-linecap="round"/>
                         <path d="M21 62 A21 21 0 0 1 63 62" stroke="#F4C95D" stroke-width="4.5" fill="none" stroke-linecap="round"/>
                         <path d="M26 62 A16 16 0 0 1 58 62" stroke="#6BB896" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-                        <!-- Kis napocska a sarokban -->
                         <circle cx="24" cy="24" r="10" fill="#F4C95D"/>
                         <circle cx="21" cy="23" r="1.4" fill="#4A3525"/>
                         <circle cx="27" cy="23" r="1.4" fill="#4A3525"/>
                         <path d="M21 27 Q24 30 27 27" stroke="#4A3525" stroke-width="1.5" fill="none" stroke-linecap="round"/>
                     </g>
 
-                    <!-- =========================================================
-                         KÖZÉPSŐ NAGY ZÖLD TÁBLA SZÁMOKKAL ÉS BETŰKKEL
-                         ========================================================= -->
+                    <!-- KÖZÉPSŐ NAGY ZÖLD TÁBLA SZÁMOKKAL ÉS A TANULT BETŰKKEL -->
                     <g transform="translate(264, 22)">
-                        <!-- Fa táblakeret -->
                         <rect x="0" y="0" width="440" height="232" rx="16" fill="#A47549" stroke="#7E5631" stroke-width="3"/>
-                        <!-- Zöld táblafelület -->
                         <rect x="12" y="12" width="416" height="208" rx="10" fill="#3B6E52"/>
-                        <!-- Krétaporos fényhatás -->
                         <ellipse cx="140" cy="80" rx="110" ry="60" fill="#FFFFFF" opacity="0.04"/>
 
-                        <!-- Tábla bal felső része: BETŰK -->
-                        <text x="32" y="42" fill="#A7DFC1" font-family="Nunito, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">BETŰK</text>
-                        <text x="32" y="80" fill="#FFFDF8" font-family="Nunito, sans-serif" font-size="30" font-weight="900" letter-spacing="3">A a  B b</text>
-                        <text x="32" y="118" fill="#F7B2D9" font-family="Nunito, sans-serif" font-size="28" font-weight="900" letter-spacing="3">C c  D d</text>
-                        <text x="32" y="156" fill="#F4C95D" font-family="Nunito, sans-serif" font-size="26" font-weight="900" letter-spacing="3">E e  É é</text>
+                        <text x="32" y="42" fill="#A7DFC1" font-family="Nunito, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">TANULT BETŰK</text>
+                        <text x="32" y="80" fill="#FFFDF8" font-family="Nunito, sans-serif" font-size="29" font-weight="900" letter-spacing="3">a A   i I   í Í</text>
+                        <text x="32" y="118" fill="#F7B2D9" font-family="Nunito, sans-serif" font-size="29" font-weight="900" letter-spacing="3">m M   o O</text>
+                        <text x="32" y="156" fill="#F4C95D" font-family="Nunito, sans-serif" font-size="29" font-weight="900" letter-spacing="3">ó Ó   e E</text>
 
-                        <!-- Szaggatott kréta elválasztó vonal középen -->
-                        <line x1="216" y1="28" x2="216" y2="195" stroke="#FFFDF8" stroke-width="2.5" stroke-dasharray="7 7" opacity="0.45"/>
+                        <line x1="226" y1="28" x2="226" y2="195" stroke="#FFFDF8" stroke-width="2.5" stroke-dasharray="7 7" opacity="0.45"/>
 
-                        <!-- Tábla jobb felső része: SZÁMOK -->
-                        <text x="236" y="42" fill="#A7DFC1" font-family="Nunito, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">SZÁMOK</text>
-                        <text x="236" y="80" fill="#F4C95D" font-family="Nunito, sans-serif" font-size="30" font-weight="900" letter-spacing="4">1  2  3  4</text>
-                        <text x="236" y="118" fill="#FFFDF8" font-family="Nunito, sans-serif" font-size="28" font-weight="900" letter-spacing="4">5  6  7  8</text>
-                        <text x="236" y="154" fill="#9AD9EA" font-family="Nunito, sans-serif" font-size="25" font-weight="900">2 + 3 = 5</text>
+                        <text x="246" y="42" fill="#A7DFC1" font-family="Nunito, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">SZÁMOK</text>
+                        <text x="246" y="80" fill="#F4C95D" font-family="Nunito, sans-serif" font-size="29" font-weight="900" letter-spacing="3">1  2  3  4</text>
+                        <text x="246" y="118" fill="#FFFDF8" font-family="Nunito, sans-serif" font-size="28" font-weight="900" letter-spacing="3">5  6  7  8</text>
+                        <text x="246" y="154" fill="#9AD9EA" font-family="Nunito, sans-serif" font-size="25" font-weight="900">2 + 3 = 5</text>
 
-                        <!-- Krétával rajzolt kis alma és csillag a tábla alján -->
                         <circle cx="52" cy="186" r="11" fill="none" stroke="#E57A66" stroke-width="2.5"/>
                         <path d="M52 175 Q56 168 61 171" stroke="#6BB896" stroke-width="2.5" fill="none" stroke-linecap="round"/>
                         <polygon points="385,172 389,181 399,182 391,188 394,198 385,192 376,198 379,188 371,182 381,181" fill="none" stroke="#F4C95D" stroke-width="2.2"/>
 
-                        <!-- Krétatartó párkány színes krétákkal és szivaccsal -->
                         <rect x="-6" y="224" width="452" height="12" rx="5" fill="#8C6239"/>
                         <rect x="65" y="218" width="26" height="6" rx="3" fill="#FFFDF8"/>
                         <rect x="102" y="218" width="22" height="6" rx="3" fill="#F4C95D"/>
@@ -362,17 +294,11 @@
                         <rect x="330" y="213" width="38" height="11" rx="3" fill="#D6B18A" stroke="#6E4B2A" stroke-width="1.5"/>
                     </g>
 
-                    <!-- =========================================================
-                         RAJZOS FALIÓRA A TÁBLA ÉS AZ ABLAK KÖZÖTT
-                         ========================================================= -->
+                    <!-- RAJZOS FALIÓRA -->
                     <g transform="translate(766, 70)">
-                        <!-- Óra árnyéka -->
                         <circle cx="3" cy="4" r="42" fill="#4A3525" opacity="0.12"/>
-                        <!-- Fa/mustársárga óratok -->
                         <circle cx="0" cy="0" r="42" fill="#F4C95D" stroke="#8C6239" stroke-width="4"/>
-                        <!-- Fehér számlap -->
                         <circle cx="0" cy="0" r="33" fill="#FFFDF8" stroke="#DFC3A2" stroke-width="2"/>
-                        <!-- Órajelzések -->
                         <circle cx="0" cy="-25" r="2.5" fill="#E57A66"/>
                         <circle cx="25" cy="0" r="2.5" fill="#4A3525"/>
                         <circle cx="0" cy="25" r="2.5" fill="#4A3525"/>
@@ -385,17 +311,13 @@
                         <circle cx="-21" cy="13" r="1.5" fill="#8A6A4B"/>
                         <circle cx="-21" cy="-13" r="1.5" fill="#8A6A4B"/>
                         <circle cx="-13" cy="-21" r="1.5" fill="#8A6A4B"/>
-                        <!-- Mutatók (10 óra 10 perc – vidám mosolygó állás) -->
                         <line x1="0" y1="0" x2="-13" y2="-13" stroke="#4A3525" stroke-width="3.5" stroke-linecap="round"/>
                         <line x1="0" y1="0" x2="18" y2="-16" stroke="#3B6E52" stroke-width="3" stroke-linecap="round"/>
                         <line x1="0" y1="4" x2="0" y2="-23" stroke="#E57A66" stroke-width="1.5" stroke-linecap="round"/>
-                        <!-- Középső csavar -->
                         <circle cx="0" cy="0" r="3.5" fill="#E57A66"/>
                     </g>
 
-                    <!-- =========================================================
-                         BAL OLDALI KÖNYVESPOLC (Földgömbbel, mackóval, könyvekkel)
-                         ========================================================= -->
+                    <!-- BAL OLDALI KÖNYVESPOLC -->
                     <g transform="translate(32, 174)">
                         <circle cx="34" cy="-16" r="16" fill="#6BAED6" stroke="#4A3525" stroke-width="2"/>
                         <path d="M26 -22 Q34 -18 38 -25 Q42 -15 32 -10 Z" fill="#6BB896"/>
@@ -441,9 +363,7 @@
                         <path d="M4 14 L32 14 L29 40 L7 40 Z" fill="#D97A54" stroke="#7E5631" stroke-width="2"/>
                     </g>
 
-                    <!-- =========================================================
-                         JOBB OLDALI NAPFÉNYES ABLAKOK
-                         ========================================================= -->
+                    <!-- JOBB OLDALI NAPFÉNYES ABLAKOK -->
                     <g transform="translate(830, 24)">
                         <rect x="0" y="0" width="115" height="165" rx="8" fill="url(#windowGlass)" stroke="#C69C72" stroke-width="4"/>
                         <line x1="57.5" y1="0" x2="57.5" y2="165" stroke="#C69C72" stroke-width="3.5"/>
@@ -455,7 +375,6 @@
                         <line x1="132" y1="82.5" x2="247" y2="82.5" stroke="#C69C72" stroke-width="3.5"/>
                         <rect x="126" y="162" width="127" height="10" rx="4" fill="#DFC3A2"/>
 
-                        <!-- Kis cserepes virág az ablakpárkányon -->
                         <path d="M196 162 L200 144 L222 144 L226 162 Z" fill="#D97A54" stroke="#7E5631" stroke-width="2"/>
                         <ellipse cx="204" cy="136" rx="11" ry="6" transform="rotate(-25 204 136)" fill="#6BB896"/>
                         <ellipse cx="220" cy="136" rx="11" ry="6" transform="rotate(25 220 136)" fill="#58A684"/>
@@ -481,10 +400,9 @@
                     <path d="M1002 392 Q1045 405 1088 389" stroke="#A66887" stroke-width="2" fill="none" stroke-linecap="round"/>
                 </svg>
 
-                <!-- ELŐTÉR TARTALOM (Úgy rendezve, hogy a tacskós kép, a zöld tábla és a falióra szabadon látszódjon!) -->
+                <!-- ELŐTÉR TARTALOM -->
                 <div class="relative z-10 grid grid-cols-12 gap-4 items-end min-h-[395px]">
                     
-                    <!-- BAL ALSÓ: Kompakt üdvözlő kártya a könyvespolc előtt (a felette lévő tacskós kép szabadon látszik!) -->
                     <div class="col-span-5 mb-2">
                         <div class="bg-[#FFFDF8]/95 backdrop-blur-xs border-[2.5px] border-[#DFC3A2] rounded-3xl p-4 xl:p-5 shadow-md">
                             <div class="flex items-center gap-2 mb-1.5">
@@ -494,7 +412,7 @@
                                 <span class="text-xs font-extrabold text-[#8A6A4B]">1. osztály</span>
                             </div>
                             <p id="kata-desktop-speech" class="text-sm xl:text-base font-extrabold text-cocoa leading-relaxed">
-                                „De jó, hogy benéztél a tantermembe! Válassz lent egy tantárgyat az Olvasás, az Írás vagy a Számolás polcáról!”
+                                „De jó, hogy benéztél! Már el is készült az első Olvasáskalandunk az 57. oldalig tanult betűkből (a, i, í, m, o, ó, e)!”
                             </p>
                             <div class="mt-3 pt-2.5 border-t border-[#EFE3D2] flex flex-wrap items-center gap-2">
                                 <span class="inline-flex items-center gap-1 text-xs font-extrabold bg-[#EAF7F0] text-[#28664B] px-2.5 py-1 rounded-xl border border-[#B7E2CA]">
@@ -509,7 +427,6 @@
                         </div>
                     </div>
 
-                    <!-- JOBB-KÖZÉP: HÁTTÉR NÉLKÜLI KATA NÉNI A SZŐNYEGEN ÁLLVA (A zöld tábla és a falióra jól látszik mögötte/mellette) -->
                     <div class="col-span-4 col-start-7 flex flex-col items-center justify-end relative">
                         <div id="kata-desktop-fullbody" class="w-52 xl:w-60 h-72 xl:h-80 flex items-end justify-center drop-shadow-[0_10px_14px_rgba(74,53,37,0.18)] transition-transform duration-300 hover:scale-[1.03]"></div>
                     </div>
@@ -517,7 +434,7 @@
                 </div>
             </section>
 
-            <!-- A3. TANTÁRGYI SZŰRŐ ÉS POLCRENDSZER (Olvasás, Írás, Számolás) -->
+            <!-- A3. TANTÁRGYI SZŰRŐ ÉS POLCRENDSZER -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
                 <div>
                     <h3 class="text-lg sm:text-xl lg:text-2xl font-black text-cocoa flex items-center gap-2">
@@ -527,7 +444,6 @@
                     <p class="text-xs sm:text-sm font-bold text-[#8A6A4B]">Kattints egy tantárgyra vagy válassz közvetlenül a kártyák közül!</p>
                 </div>
 
-                <!-- Tantárgyi szűrő gombok -->
                 <div class="flex flex-wrap items-center gap-2" id="subject-filter-bar">
                     <button onclick="filterSubjects('all', this)" class="filter-pill active bg-chalkboard text-white font-black text-xs sm:text-sm px-3.5 py-2 rounded-xl shadow-2xs cursor-pointer transition-all">
                         🏫 Összes
@@ -544,19 +460,19 @@
                 </div>
             </div>
 
-            <!-- Kártyák rácsa (Tiszta linkes szerkezet: minden új feladat egy külön HTML fájl lesz) -->
+            <!-- Kártyák rácsa -->
             <section id="games-shelf-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
 
-                <!-- 1. POLC: OLVASÁS (Hely előkészítve) -->
-                <div data-subject="olvasas" onclick="showComingSoon('Olvasás – Betű- és szótagkereső', 'Éppen most válogatom össze a legkedvesebb elsős szótagokat és rövid szavakat! Hamarosan itt lesz a helyén! 📖')" 
-                     class="game-card storybook-card rounded-3xl p-5 sm:p-6 cursor-pointer hover:border-skyroom transition-all flex flex-col justify-between group">
+                <!-- 1. POLC: OLVASÁS (ELÉRHETŐ! Közvetlen link az olvasas-1.html fájlra) -->
+                <a data-subject="olvasas" href="olvasas-1.html" 
+                   class="game-card storybook-card rounded-3xl p-5 sm:p-6 cursor-pointer border-skyroom/70 hover:border-skyroom hover:bg-[#F5FAFD] transition-all flex flex-col justify-between group">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-3">
                             <span class="bg-skyroom/20 text-[#275D7D] text-xs font-black px-3 py-1 rounded-full">
                                 📖 OLVASÁS • 1. OSZTÁLY
                             </span>
-                            <span class="bg-[#FFF7E2] text-[#9E6B1E] text-[11px] font-black px-2.5 py-0.5 rounded-lg border border-[#F4C95D]">
-                                Készül
+                            <span class="bg-mint text-white text-[11px] font-black px-2.5 py-0.5 rounded-full">
+                                ✅ ELÉRHETŐ
                             </span>
                         </div>
                         <div class="flex items-center gap-3.5 mb-3">
@@ -564,19 +480,19 @@
                                 🔤
                             </div>
                             <div>
-                                <h4 class="text-lg sm:text-xl font-black text-cocoa">Betű- és szótagolvasó</h4>
-                                <p class="text-xs font-extrabold text-[#275D7D]">Hamarosan indul!</p>
+                                <h4 class="text-lg sm:text-xl font-black text-cocoa group-hover:text-[#275D7D] transition-colors">Betű- és szótagolvasó</h4>
+                                <p class="text-xs font-extrabold text-[#28664B]">a, i, í, m, o, ó, e (57. o.)</p>
                             </div>
                         </div>
                         <p class="text-xs sm:text-sm font-bold text-[#6E533B] leading-relaxed">
-                            Kisbetűk, nagybetűk párosítása, szótagolás és első rövid szavak vidám olvasása képekkel.
+                            Kezdőhang-kereső, kis- és nagybetű párkereső és az első szavak összeolvasása hangos segítséggel!
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-[#EFE3D2] flex items-center justify-between text-xs font-extrabold text-[#7A6048]">
-                        <span>Fájlnév helye: <code class="bg-[#FDF6E9] px-1.5 py-0.5 rounded">olvasas-1.html</code></span>
-                        <span>⏳</span>
+                    <div class="mt-4 pt-3 border-t border-[#EFE3D2] flex items-center justify-between text-xs font-black text-[#275D7D]">
+                        <span>Játék indítása</span>
+                        <span class="bg-skyroom text-white px-3 py-1 rounded-xl">Indítás →</span>
                     </div>
-                </div>
+                </a>
 
                 <!-- 2. POLC: ÍRÁS (Hely előkészítve) -->
                 <div data-subject="iras" onclick="showComingSoon('Írás – Betűpótló és helyesírás', 'Már készülnek a kis- és nagybetűs, valamint a rövid-hosszú magánhangzós játékos feladatok az elsősöknek! ✏️')" 
@@ -640,7 +556,7 @@
                     </div>
                 </div>
 
-                <!-- KÜLÖNÁLLÓ JÁTÉK LINK: Szólás- és Közmondáskaland (külön szolasok.html fájlra mutat) -->
+                <!-- KÜLÖNÁLLÓ JÁTÉK LINK: Szólás- és Közmondáskaland -->
                 <a data-subject="olvasas" href="szolasok.html" class="game-card md:col-span-3 group bg-[#FFFDF8] hover:bg-[#F4FBF7] border-2 border-[#B7E2CA] hover:border-mint rounded-3xl p-4 sm:p-5 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
                     <div class="flex items-center gap-3.5">
                         <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#F4C95D] to-[#E57A66] text-white flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
@@ -747,17 +663,12 @@
     </footer>
 
     <!-- =====================================================================
-         4. JAVASCRIPT LOGIKA (Csak a főoldal működéséhez szükséges tiszta kód)
+         4. JAVASCRIPT LOGIKA
          ===================================================================== -->
     <script>
-        // A gyökérkönyvtárban (a HTML fájl mellett) található Kata néni képfájl neve
         const KATA_IMAGE_FILENAME = 'IMG_0488.jpeg';
         let currentKataImageUrl = KATA_IMAGE_FILENAME;
 
-        /**
-         * Intelligens háttéreltávolító: eltünteti a külső fehér vagy szürke-fehér
-         * sakktáblás hátteret flood-fill algoritmussal, majd szorosan körbevágja.
-         */
         function removeBackgroundFromImage(imgSource) {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -918,7 +829,6 @@
             });
         }
 
-        // Összegyűjtött csillagok megjelenítése (a különálló játékok is ezt a kulcsot növelik!)
         const totalStarsCountEl = document.getElementById('total-stars-count');
         function updateStarsDisplay() {
             const totalStars = parseInt(localStorage.getItem('kata_neni_total_stars') || '0', 10);
@@ -927,7 +837,6 @@
             }
         }
 
-        // Tantárgyi szűrő kezelése (Összes / Olvasás / Írás / Számolás)
         function filterSubjects(subject, clickedBtn) {
             const buttons = document.querySelectorAll('#subject-filter-bar .filter-pill');
             buttons.forEach(btn => {
@@ -950,7 +859,6 @@
             });
         }
 
-        // Modális ablakok
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) modal.classList.add('hidden');
@@ -1005,7 +913,6 @@
             generateAppIcon();
         });
 
-        // Ha a gyerek visszalép egy játékból a böngésző Vissza gombjával, frissüljön a csillagszám
         window.addEventListener('pageshow', updateStarsDisplay);
     </script>
 </body>
